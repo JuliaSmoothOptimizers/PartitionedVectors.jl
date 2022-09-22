@@ -1,4 +1,4 @@
-import LinearAlgebra: norm, dot, axpy!, axpby!
+import LinearAlgebra: norm, dot
 
 function norm(pv::PartitionedVector, p::Real=2)
   build!(pv)

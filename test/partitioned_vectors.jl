@@ -3,7 +3,7 @@
   n = 20
   nie = 5
   element_variables =
-    vcat(map((i -> sample(1:n, nie, replace = false)), 1:(N - 1)), [[1, 8, 12, 16, 20]])
+    vcat(map((i -> sample(1:n, nie, replace = false)), 1:(N -4)), [[1:5;], [6:10;], [11:15;], [16:20;]])
   
   epv = PS.create_epv(element_variables; type=Float32)
   _pv32 = PartitionedVector(epv)
