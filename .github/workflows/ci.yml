@@ -39,7 +39,7 @@ jobs:
       - name: Installing non-registered dependencies
         run: |
           using Pkg
-          pkg1 = PackageSpec(url = "https://github.com/paraynaud/PartitionedStructures.jl.git#pr-partitioned-broadcast")
+          pkg1 = PackageSpec(url = "https://github.com/paraynaud/PartitionedStructures.jl.git", rev="pr-rm-PartitionedVector")
           pkg2 = PackageSpec(url = "https://github.com/paraynaud/PartitionedVectors.jl.git")
           pkg_list = [pkg1, pkg2]
           Pkg.add(pkg_list)
