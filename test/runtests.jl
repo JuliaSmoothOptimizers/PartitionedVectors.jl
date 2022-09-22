@@ -1,7 +1,8 @@
 using Test
+using StatsBase, LinearAlgebra
+using PartitionedStructures
 using PartitionedVectors
 
-@testset "first round" begin
-	@test 2==2
-end 
+const PS = PartitionedStructures
 
+include("partitioned_vectors.jl")
