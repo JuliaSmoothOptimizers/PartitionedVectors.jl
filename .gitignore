@@ -23,9 +23,5 @@ docs/site/
 # environment.
 Manifest.toml
 
-# mes modifs
-
-todo.md
-
-test/dvpt/
-test/results/
+# working repositories
+dvpt/**
