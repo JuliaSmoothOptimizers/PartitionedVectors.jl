@@ -1,7 +1,7 @@
 name = "PartitionedVectors"
 uuid = "9d5e22db-ddc8-46c9-8309-91b035e7f733"
 authors = ["Paul Raynaud <paul.raynaud@polymtl.ca>"]
-version = "0.0.1"
+version = "0.1.0"
 
 [deps]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
