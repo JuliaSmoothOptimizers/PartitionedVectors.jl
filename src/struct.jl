@@ -6,14 +6,14 @@ mutable struct PartitionedVector{T} <: AbstractPartitionedVector{T}
   simulate_vector::Bool
 end
 
-function PartitionedVector(eevar::Vector{Vector{Int}}; T::DataType=Float64, simulate_vector::Bool=false)
-  epv = create_epv(eevar; type=T)
+function PartitionedVector(eevar::Vector{Vector{Int}}; T::DataType=Float64, simulate_vector::Bool=false, kwargs...)
+  epv = create_epv(eevar; type=T, kwargs...)
   vec = Vector{T}(undef, PS.get_n(epv))
   pv = PartitionedVector{T}(epv, vec, simulate_vector)
   return pv
 end 
 
-function PartitionedVector(epv::Elemental_pv{T}; simulate_vector::Bool=false) where T
+function PartitionedVector(epv::Elemental_pv{T}; simulate_vector::Bool=false, kwargs...) where T
   vec = Vector{T}(undef, PS.get_n(epv))
   pv = PartitionedVector{T}(epv, vec, simulate_vector)
   return pv
@@ -33,5 +33,13 @@ function build!(pv::PartitionedVector, ::Val{true})
     val = PS.get_vec_from_indices(eev, i)
     vec[i] = val
   end
+  return pv
+end
+
+set!(pv::PartitionedVector{T}, v::Vector{T}) where T = set!(pv, v, Val(pv.simulate_vector))
+
+function set!(pv::PartitionedVector{T}, v::Vector{T}, ::Val{true}) where T
+  epv = pv.epv
+  epv_from_v!(epv, v)
   return pv
 end

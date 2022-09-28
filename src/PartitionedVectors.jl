@@ -7,7 +7,7 @@ const PS = PartitionedStructures
 using ..PartitionedStructures: M_elt_vec, M_abstract_element_struct, M_part_v, M_abstract_part_struct, ModElemental_pv, ModElemental_ev, M_part_mat
 
 export PartitionedVector
-export build!
+export build!, set!
 
 include("struct.jl")
 
