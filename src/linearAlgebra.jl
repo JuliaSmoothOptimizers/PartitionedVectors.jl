@@ -9,5 +9,5 @@ end
 function dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}) where T
   build!(pv1)
   build!(pv2)
-  dot(get_v(pv1.epv), get_v(pv2.epv))
+  dot(get_v(pv1.epv), get_v(pv2.epv))  
 end

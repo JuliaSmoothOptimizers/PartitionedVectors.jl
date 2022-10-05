@@ -28,10 +28,12 @@ function build!(pv::PartitionedVector, ::Val{true})
   vec = epv.v
   component_list = epv.component_list
   for i in 1:length(vec)
-    index_element = component_list[i][1]
-    eev = PS.get_eev_set(epv, index_element)
-    val = PS.get_vec_from_indices(eev, i)
-    vec[i] = val
+    if !isempty(component_list[i])
+      index_element = component_list[i][1]
+      eev = PS.get_eev_set(epv, index_element)
+      val = PS.get_vec_from_indices(eev, i)
+      vec[i] = val
+    end
   end
   return pv
 end
