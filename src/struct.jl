@@ -1,5 +1,10 @@
 abstract type AbstractPartitionedVector{T} <: DenseVector{T} end # for Krylov 
 
+"""
+    PartitionedVector{T} <: AbstractPartitionedVector{T}
+
+Wrap `PartitionedStructures.Elemental_pv` to define a `struct` which behave almost as a `AbstractVector`.
+"""
 mutable struct PartitionedVector{T} <: AbstractPartitionedVector{T}
   epv::Elemental_pv{T}
   vec::Vector{T}
@@ -19,6 +24,11 @@ function PartitionedVector(epv::Elemental_pv{T}; simulate_vector::Bool=false, kw
   return pv
 end
 
+"""
+    build!(pv::PartitionedVector)
+    
+Set in place of `pv.epv.v` the value of the `Vector` `pv` represents.
+"""
 build!(pv::PartitionedVector) = build!(pv, Val(pv.simulate_vector))
 
 build!(pv::PartitionedVector, ::Val{false}) = build_v!(pv.epv)
@@ -38,6 +48,11 @@ function build!(pv::PartitionedVector, ::Val{true})
   return pv
 end
 
+"""
+    set!(pv::PartitionedVector{T}, v::Vector{T})
+
+Set inplace `pv` such that each element values Uᵢv.
+"""
 set!(pv::PartitionedVector{T}, v::Vector{T}) where T = set!(pv, v, Val(pv.simulate_vector))
 
 function set!(pv::PartitionedVector{T}, v::Vector{T}, ::Val{true}) where T

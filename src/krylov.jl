@@ -3,16 +3,7 @@ import Krylov.CgSolver
 import Base.setproperty!
 
 function axpy!(s::Y, x::PartitionedVector{T}, y::PartitionedVector{T}) where {T<:Number,Y<:Number}
-  axpy!(s,x,y,Val(x.simulate_vector), Val(y.simulate_vector))
-end
-
-function axpy!(s::Y, x::PartitionedVector{T}, y::PartitionedVector{T}, ::Val{true}, ::Val{false}) where {T<:Number,Y<:Number}
-  build!(x)
-  build!(y)
-  xvector = x.epv.v
-  yvector = y.epv.v
-  epv_from_v!(y.epv, s .* xvector .+ yvector)
-  return y
+  axpy!(s, x, y, Val(x.simulate_vector), Val(y.simulate_vector))
 end
 
 function axpy!(s::Y, x::PartitionedVector{T}, y::PartitionedVector{T}, ::Val{true}, ::Val{true}) where {T<:Number,Y<:Number}
@@ -47,15 +38,6 @@ function axpby!(s::Y1, x::PartitionedVector{T}, t::Y2, y::PartitionedVector{T}, 
   return y
 end
 
-# function axpby!(s::Y1, x::PartitionedVector{T}, t::Y2, y::PartitionedVector{T}, ::Val{false}, ::Val{true}) where {T<:Number,Y1<:Number,Y2<:Number}
-#   build!(x)
-#   build!(y)
-#   xvector = x.epv.v
-#   yvector = y.epv.v
-#   epv_from_v!(y.epv, s .* xvector .+ yvector .* t)
-#   return y
-# end
-
 function axpby!(s::Y1, x::PartitionedVector{T}, t::Y2, y::PartitionedVector{T}, ::Val{false}, ::Val{false}) where {T<:Number,Y1<:Number,Y2<:Number}
   y .= x .* s .+ y .* t
   return y
@@ -63,11 +45,8 @@ end
 
 function axpby!(s::Y1, x::PartitionedVector{T}, t::Y2, y::PartitionedVector{T}, ::Val{true}, ::Val{true}) where {T<:Number,Y1<:Number,Y2<:Number}
   y .= x .* s .+ y .* t
+  return y
 end
-
-
-# mul!(y, P, x)
-
 
 function CgSolver(pv::PartitionedVector{T}) where T  
   Δx = similar(pv; simulate_vector=true)
@@ -87,6 +66,9 @@ function CgSolver(pv::PartitionedVector{T}) where T
   return solver
 end
 
+# This way, solver.warm_start stays true at all time.
+# It prevents the else case where r .= b at the beginning of cg!.
+# r is supposed to simulate while b is not.
 function setproperty!(solver::CgSolver{T,T,PartitionedVector{T}}, sym::Symbol, val::Bool) where T
   if sym === :warm_start
     return nothing
