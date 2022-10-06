@@ -39,8 +39,8 @@ jobs:
       - name: Installing non-registered dependencies
         run: |
           using Pkg
-          pkg1 = PackageSpec(url = "https://github.com/paraynaud/PartitionedStructures.jl.git", rev="pr-rm-PartitionedVector")
-          pkg2 = PackageSpec(url = "https://github.com/paraynaud/PartitionedVectors.jl.git")
+          pkg1 = PackageSpec(url = "https://github.com/paraynaud/PartitionedStructures.jl.git", rev="pr-PartitionedVector")
+          pkg2 = PackageSpec(url = "https://github.com/paraynaud/PartitionedVectors.jl.git", rev="pr-PS-transfer")
           pkg_list = [pkg1, pkg2]
           Pkg.add(pkg_list)
         shell: julia --project=docs --color=yes {0}
@@ -55,6 +55,14 @@ jobs:
             ${{ runner.os }}-test-
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@v1
+      - name: Installing PartitionedStructures.jl WIP
+        run: |
+          using Pkg
+          Pkg.rm("PartitionedStructures")
+          pkg = PackageSpec(url = "https://github.com/paraynaud/PartitionedStructures.jl.git", rev="pr-PartitionedVector")
+          pkg_list = [pkg]
+          Pkg.add(pkg_list)
+        shell: julia --project=docs --color=yes {0}      
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
       - uses: codecov/codecov-action@v1
