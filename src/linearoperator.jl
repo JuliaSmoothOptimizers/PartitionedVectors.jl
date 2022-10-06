@@ -2,7 +2,6 @@ import LinearAlgebra.mul!
 
 function partitionedMulOp!(epm, Hv::PartitionedVector, pv_res::PartitionedVector, pv::PartitionedVector, α, β)
   epv = pv.epv
-  epv_res = pv_res.epv
   epv_hv = Hv.epv
   PS.mul_epm_epv!(epv_hv, epm, epv)
   pv_res .= α .* Hv .+ β .* pv_res
