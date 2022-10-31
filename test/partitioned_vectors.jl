@@ -31,6 +31,10 @@
   pv_res .= -1 .* pv32
   @test pv_sim == pv_res
 
+  pv_sim .= pv32 .- pv32
+  pv_res .= 0 .* pv32
+  @test pv_sim == pv_res
+
   @test 2 * pv32 == pv32 + pv32
   @test - pv32 == -1 * pv32
 end
