@@ -9,6 +9,8 @@ using ..PartitionedStructures: M_elt_vec, M_abstract_element_struct, M_part_v, M
 export PartitionedVector
 export build!, set!
 
+export LinearOperator_for_Vector
+
 include("struct.jl")
 
 include("base.jl")
