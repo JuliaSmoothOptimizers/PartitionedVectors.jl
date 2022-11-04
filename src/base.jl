@@ -23,7 +23,6 @@ end
 
 function setindex!(pv::PartitionedVector{T}, val::T, index::Int) where T<:Number
   get_eev_value(pv.epv, index) .= val
-  get_v(pv.epv) .= val
   return pv
 end 
 

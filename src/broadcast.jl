@@ -10,19 +10,28 @@ Base.BroadcastStyle(::Base.Broadcast.BroadcastStyle, ::PartitionedVectorStyle) =
 
 function Base.similar(bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle}, ::Type{ElType}) where ElType
   pv = find_pv(bc)
-  pvres = similar(pv)
+  pvres = similar(pv)  
   return pvres
 end
 
-function Base.copy(bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle})
-  pv = find_pv(bc)
-  pvres = copy(pv)
-  return pvres
+function Base.copyto!(dest::PartitionedVector, bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle})
+  bcf = Base.Broadcast.flatten(bc)
+  for i in bcf.axes[1]
+    filtered = _filter(i, bcf.args)
+    res = bcf.f(filtered...)
+    dest[i] = res
+  end
+  return dest
 end
 
-find_pv(bc::Base.Broadcast.Broadcasted) = find_pv(bc.args)
-find_pv(args::Tuple) = find_pv(find_pv(args[1]), Base.tail(args))
-find_pv(x) = x
-find_pv(::Tuple{}) = nothing
-find_pv(a::PartitionedVector, rest) = a
-find_pv(::Any, rest) = find_pv(rest)
+# Select the i-th argument if needed in a Tuple of arguments
+_filter(i::Int, arg::Tuple{}) = ()
+_filter(i::Int, arg::PartitionedVector) = arg[i]
+_filter(i::Int, arg::Any) = arg
+_filter(i::Int, args::Tuple) = (_filter(i, args[1]), _filter(i, Base.tail(args))...)
+
+# Select a PartitionnedVector in a Broadcasted tape
+find_pv(bc::Base.Broadcast.Broadcasted) = find_pv(bc.args...)
+find_pv(x::PartitionedVector) = x
+find_pv(x::PartitionedVector, a::Any) = x
+find_pv(x::Any, a::Any) = find_pv(a)
