@@ -26,6 +26,7 @@
   pv_sim .= pv32 .+ pv32
   pv_res .= 2 .* pv32
   @test pv_sim == pv_res
+  @test pv32 .+ pv32 == 2 .* pv32
   
   pv_sim .= .- pv32
   pv_res .= -1 .* pv32

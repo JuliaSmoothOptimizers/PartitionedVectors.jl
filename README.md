@@ -17,8 +17,31 @@
 [doi-img]: https://img.shields.io/badge/DOI-10.5281%2Fzenodo.822073-blue.svg
 [doi-url]: https://doi.org/10.5281/zenodo.822073
 
+## Compatibility
+Julia ≥ 1.6.
+
+## How to install
 This module can be installed with the following command:
-``` julia
-] add https://github.com/paraynaud/PartitionedVectors.jl.git
+```julia
+pkg> add https://github.com/paraynaud/PartitionedVectors.jl.git
+pkg> test PartitionedVectors
 ```
-See the [tutorial](docs/src/tutorial.md) for a step-by-step example.
+
+## Synopsis
+PartitionedVectors is a wrapper around the `Elemental_pv`, a partitioned data structure defined in [PartitionedStructures.jl](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl), to make it behave as an `AbstractVector`. 
+It implements `PartitionedVector <: DenseVector <: AbstractVector`, as well as elementary operations that can work on it.
+
+## How to use
+<!-- Check the [tutorial](https://JuliaSmoothOptimizers.github.io/PartitionedVectors.jl/stable/). -->
+Check the [tutorial](https://paraynaud/PartitionedVectors.jl/dev/).
+
+## How to Cite
+
+If you use PartitionedVectors.jl in your work, please cite using the format given in [`CITATION.bib`](https://github.com/JuliaSmoothOptimizers/PartitionedVectors.jl/blob/main/CITATION.bib).
+
+# Bug reports and discussions
+
+If you think you found a bug, feel free to open an [issue](https://github.com/JuliaSmoothOptimizers/PartitionedVectors.jl/issues).
+Focused suggestions and requests can also be opened as issues. Before opening a pull request, start an issue or a discussion on the topic, please.
+
+If you want to ask a question not suited for a bug report, feel free to start a discussion [here](https://github.com/JuliaSmoothOptimizers/Organization/discussions). This forum is for general discussion about this repository and the [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers), so questions about any of our packages are welcome.

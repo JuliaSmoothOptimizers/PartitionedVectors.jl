@@ -37,12 +37,15 @@ In optimization methods, it allows to store the current point $x_k$ or step $s_k
 Any methods exploiting partially separable concepts will have to manipulate both usages at the same time, in particular the solvers from JSOSolvers.jl and Krylov.jl.
 By default, you can define a `PartitionedVector` just from `Uis` as
 ```@example PV
+using PartitionedVectors
 pv = PartitionedVector(Uis)
 ```
 which will be of usage 1.
 If you want a vector for usage 2 you have to set `simulate_vector` optional argument to `true`
 ```@example PV
 pv_vec = PartitionedVector(Uis; simulate_vector=true)
+# set each element as a view of rand(length(pv_vec))
+set!(pv_vec, rand(length(pv_vec))) 
 ```
 
 PartitionedVectors.jl specify several methods from various modules.
@@ -56,7 +59,7 @@ pv2 = pv - 0.5 * pv
 ```
 Moreover, it supports the broadcast for the same operations (unfortunately not in place for now).
 ```@example PV
-pv .+ pv .== 2 .* pv
+pv .+ pv == 2 .* pv
 pv .- pv == 0 .* pv
 ```
 - supports methods related to `AbstractArray`s such as: 
@@ -80,6 +83,7 @@ pv .- pv == 0 .* pv
   ```
 LinearAlgebra:
 ```@example PV
+using LinearAlgebra
 dot(pv,pv) == norm(pv)^2
 ```
 

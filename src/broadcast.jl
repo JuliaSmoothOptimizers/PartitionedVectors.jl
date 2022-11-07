@@ -22,3 +22,15 @@ _filter(i::Int, arg::Tuple{}) = ()
 _filter(i::Int, arg::PartitionedVector) = arg[i]
 _filter(i::Int, arg::Any) = arg
 _filter(i::Int, args::Tuple) = (_filter(i, args[1]), _filter(i, Base.tail(args))...)
+
+function Base.similar(bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle}, ::Type{ElType}) where ElType
+  pv = find_pv(bc)
+  pvres = similar(pv)  
+  return pvres
+end
+
+# Select a PartitionnedVector in a Broadcasted tape
+find_pv(bc::Base.Broadcast.Broadcasted) = find_pv(bc.args...)
+find_pv(x::PartitionedVector) = x
+find_pv(x::PartitionedVector, a::Any) = x
+find_pv(x::Any, a::Any) = find_pv(a)
