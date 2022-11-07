@@ -31,8 +31,8 @@ function setindex!(pv::PartitionedVector{T}, val::Vector{T}, index::Int) where T
   return pv
 end
 
-firstindex(pv::PartitionedVector) = get_N(pv.epv) > 0 ? 1 : 0
-lastindex(pv::PartitionedVector) = get_N(pv.epv)
+firstindex(pv::PartitionedVector) = PS.get_N(pv.epv) > 0 ? 1 : 0
+lastindex(pv::PartitionedVector) = PS.get_N(pv.epv)
 
 function (+)(pv1::PartitionedVector, pv2::PartitionedVector)
   epv1 = pv1.epv
@@ -74,7 +74,6 @@ end
 
 copy(pv::PartitionedVector{T}; simulate_vector::Bool=pv.simulate_vector) where {T <: Number} = PartitionedVector{T}(copy(pv.epv), copy(pv.vec), simulate_vector)
 similar(pv::PartitionedVector{T}; simulate_vector::Bool=pv.simulate_vector) where {T <: Number} = PartitionedVector{T}(similar(pv.epv), similar(pv.vec), simulate_vector)
-similar(pv::PartitionedVector{T}, ::Type{T}, n::Int; simulate_vector::Bool=pv.simulate_vector) where {T <: Number} = PartitionedVector{T}(similar(pv.epv), similar(pv.vec), simulate_vector)
 
 function Base.Vector(pv::PartitionedVector{T}) where T
   build!(pv)
