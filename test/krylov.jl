@@ -72,3 +72,22 @@ end
 
   @test x_vector ≈ x
 end
+
+@testset "krylov methods" begin
+  N = 5
+  n = 8
+  element_variables = [ [1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7], [5, 6, 8], Int[]]
+  
+  pv = PartitionedVector(element_variables; n)
+  pv_init = PartitionedVector(element_variables; n)
+  res = copy(pv_init)
+  
+  s = 5.
+  axpy!(s, pv, res)
+  @test res == pv_init + s * pv
+  
+  res .= pv_init
+  t = 0.3
+  axpby!(s, pv, t, res)
+  @test res == pv * s + pv_init * t
+end
