@@ -37,9 +37,12 @@
 
   @test 2 * pv32 == pv32 + pv32  
   @test - pv32 == -1 * pv32
+  @test pv32 - pv32 == 0 * pv32
 
   @testset "other methods" begin
     @test firstindex(pv32) == 1
     @test lastindex(pv32) == N
+
+    show(pv32)
   end
 end
