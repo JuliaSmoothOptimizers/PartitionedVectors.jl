@@ -42,7 +42,9 @@ end
 function LinearOperator_for_Vector(epm::Part_mat{T}) where T
   n = PS.get_n(epm)
   Hv = Vector{T}(undef, n)
-  B = LinearOperator(T, n, n, true, true, (res, v, α, β) -> partitionedMulOpVec!(epm, Hv, res, v, α, β))
+  epv = epv_from_epm(epm)
+  epv_hv = epv_from_epm(epm)
+  B = LinearOperator(T, n, n, true, true, (res, v, α, β) -> partitionedMulOpVec!(epm, Hv, res, v, α, β; epv, epv_hv))
   return B
 end
 

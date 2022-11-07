@@ -26,6 +26,11 @@ function setindex!(pv::PartitionedVector{T}, val::T, index::Int) where T<:Number
   return pv
 end 
 
+function setindex!(pv::PartitionedVector{T}, val::Vector{T}, index::Int) where T<:Number
+  get_eev_value(pv.epv, index) .= val
+  return pv
+end
+
 firstindex(pv::PartitionedVector) = get_N(pv.epv) > 0 ? 1 : 0
 lastindex(pv::PartitionedVector) = get_N(pv.epv)
 
