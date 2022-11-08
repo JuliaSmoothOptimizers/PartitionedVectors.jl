@@ -28,7 +28,7 @@ pkg> test PartitionedVectors
 ```
 
 ## Synopsis
-A `PartitionedVector <: DenseVector <: AbstractVector` wraps a `[PartitionedStructures](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl).Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
+A `PartitionedVector <: DenseVector <: AbstractVector` wraps a [PartitionedStructures](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl)`.Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
 
 ## How to use
 <!-- Check the [tutorial](https://JuliaSmoothOptimizers.github.io/PartitionedVectors.jl/stable/). -->

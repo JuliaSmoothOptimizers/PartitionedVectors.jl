@@ -22,3 +22,16 @@
   
   @test dot(pv1, pv2) == dot(Vector(pv1), Vector(pv2))  
 end
+
+@testset "LinearOperator" begin
+  N = 5
+  n = 8
+  element_variables = [ [1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7], [5, 6, 8], Int[]]
+
+  pv = PartitionedVector(element_variables; n)
+
+  epm = PS.identity_epm(element_variables; n)
+  lo = LinearOperators.LinearOperator(epm)
+
+  lo * pv
+end
