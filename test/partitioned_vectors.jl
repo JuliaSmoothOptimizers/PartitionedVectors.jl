@@ -2,12 +2,14 @@
   N = 15
   n = 20
   nie = 5
-  element_variables =
-    vcat(map((i -> sample(1:n, nie, replace = false)), 1:(N -4)), [[1:5;], [6:10;], [11:15;], [16:20;]])
+  element_variables = vcat(
+    map((i -> sample(1:n, nie, replace = false)), 1:(N - 4)),
+    [[1:5;], [6:10;], [11:15;], [16:20;]],
+  )
 
   pv = PartitionedVector(element_variables)
-  pv[1] = 1.
-  @test (@allocated pv[1] = 1.) == 0
+  pv[1] = 1.0
+  @test (@allocated pv[1] = 1.0) == 0
   @test PS.get_vec(pv[1]) == ones(nie)
 
   pvsim = similar(pv)
