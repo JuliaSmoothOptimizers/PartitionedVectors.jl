@@ -1,11 +1,11 @@
 # PartitionedVectors.jl Tutorial
 
-PartitionedVectors is a wrapper around the `Elemental_pv`, a partitioned data structure defined in [PartitionedStructures.jl](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl), to make it behave as an `AbstractVector`.
-It implements `PartitionedVector <: DenseVector <: AbstractVector`, which aims to define [PartiallySeparableNLPModel](https://github.com/JuliaSmoothOptimizers/PartiallySeparableNLPModels.jl)s, and then to consequently:
+A `PartitionedVector <: DenseVector <: AbstractVector` wraps a `[PartitionedStructures](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl).Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
+For now, `PartitionedVector` is the keystone to define [PartiallySeparableNLPModel](https://github.com/JuliaSmoothOptimizers/PartiallySeparableNLPModels.jl)s, and then to consequently:
 - replace `Vector` in [JSOSolvers.jl](https://github.com/JuliaSmoothOptimizers/JSOSolvers.jl); 
 - replace `Vector` in [KrylovSolvers.jl](https://github.com/JuliaSmoothOptimizers/Krylov.jl);
 - make `LinearOperator`s relying only on `PartitionedVector`s viable;
-- fit consequently the NLPModels interface (ex: `NLPModels.obj(nlp::PartiallySeparableNLPModel, x::PartitionedVector)` see PartiallySeparableNLPModels.jl for more details).
+- fit the NLPModels interface (ex: `NLPModels.obj(nlp::PartiallySeparableNLPModel, x::PartitionedVector)` see PartiallySeparableNLPModels.jl for more details).
 
 Partitioned vectors usages are related to partially separable problems:
 ```math
