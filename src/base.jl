@@ -14,8 +14,20 @@ function show(io::IO, pv::PartitionedVector)
   return nothing
 end
 
+"""
+    element_vector = getindex(pv::PartitionedVector, i::Int)
+
+Return the `i`-th element of `pv`, e.g. the `i`-th element vector.
+"""
 getindex(pv::PartitionedVector, inds...) = PS.get_eev_set(pv.epv)[inds...]
 
+"""
+    setindex!(pv::PartitionedVector, val::Elemental_elt_vec, index::Int)
+    setindex!(pv::PartitionedVector{T}, val::T, index::Int) where T<:Number
+    setindex!(pv::PartitionedVector{T}, val::Vector{T}, index::Int) where T<:Number
+
+Set `pv[index]` (e.g. the `index`-th element vector) to `val`.
+"""
 function setindex!(pv::PartitionedVector, eev::Elemental_elt_vec, index::Int)
   get_eev_value(pv.epv, index) .= PS.get_vec(eev)
   return pv

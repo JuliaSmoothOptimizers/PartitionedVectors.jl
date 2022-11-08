@@ -18,6 +18,14 @@ function Base.copyto!(dest::PartitionedVector, bc::Base.Broadcast.Broadcasted{Pa
 end
 
 # Select the i-th argument if needed in a Tuple of arguments
+"""
+    _filter(i::Int, arg::Tuple{})
+    element_vector = _filter(i::Int, arg::PartitionedVector)
+    _filter(i::Int, arg::Any)
+    _filter(i::Int, args::Tuple)
+
+Pass through a `Tuple` to select the `i`-th element if necessary.
+"""
 _filter(i::Int, arg::Tuple{}) = ()
 _filter(i::Int, arg::PartitionedVector) = arg[i]
 _filter(i::Int, arg::Any) = arg
@@ -30,6 +38,14 @@ function Base.similar(bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle}, ::
 end
 
 # Select a PartitionnedVector in a Broadcasted tape
+"""
+    pv = find_pv(bc::Base.Broadcast.Broadcasted)
+    pv = find_pv(x::PartitionedVector)
+    pv = find_pv(x::PartitionedVector, a::Any)
+    pv = find_pv(x::Any, a::Any)
+
+Pass through a `Broadcasted` tape to retrieve a `PartitionedVector`.
+"""
 find_pv(bc::Base.Broadcast.Broadcasted) = find_pv(bc.args...)
 find_pv(x::PartitionedVector) = x
 find_pv(x::PartitionedVector, a::Any) = x

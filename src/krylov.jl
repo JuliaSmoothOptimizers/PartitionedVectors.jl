@@ -57,7 +57,7 @@ function CgSolver(pv::PartitionedVector{T}) where T
   r .= (T)(0) # will be reset at each cg! call to 0 because of mul!(r,A,Δx)
   p  = similar(pv; simulate_vector=true)
   p .= (T)(0)
-  Ap = similar(pv; simulate_vector=false)
+  Ap = similar(pv; simulate_vector=false) # result of the partitioned matrix vector product
   Ap .= (T)(0)
   z = similar(pv; simulate_vector=true)
   z .= (T)(0)
@@ -68,7 +68,7 @@ end
 
 # This way, solver.warm_start stays true at all time.
 # It prevents the else case where r .= b at the beginning of cg!.
-# r is supposed to simulate while b is not.
+# r is supposed to simulate while b is not supposed to.
 function setproperty!(solver::CgSolver{T,T,PartitionedVector{T}}, sym::Symbol, val::Bool) where T
   if sym === :warm_start
     return nothing

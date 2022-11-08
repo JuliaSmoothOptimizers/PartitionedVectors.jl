@@ -25,7 +25,7 @@ end
     partitionedMulOpVec!(epm::PS.Part_mat{T}, Hv::Vector{T}, res::Vector{T}, v::Vector{T}, α, β;
 
 Partitioned matrix-vector product for `Vector`s: `Hv`, `res` and `v`.
-Test purpose.
+Made to test `LinearOperators.LinearOperator(epm::Part_mat{T})` (which relies on `PartitionedVector`s).
 """
 function partitionedMulOpVec!(epm::PS.Part_mat{T}, Hv::Vector{T}, res::Vector{T}, v::Vector{T}, α, β;
   epv=epv_from_epm(epm),
@@ -39,6 +39,11 @@ function partitionedMulOpVec!(epm::PS.Part_mat{T}, Hv::Vector{T}, res::Vector{T}
   return res
 end
 
+"""
+    lo = LinearOperator_for_Vector(epm::Part_mat{T})
+
+Return the linear-operator `lo` which use a partitioned-matrix and `Vector`s.
+"""
 function LinearOperator_for_Vector(epm::Part_mat{T}) where T
   n = PS.get_n(epm)
   Hv = Vector{T}(undef, n)
