@@ -2,12 +2,17 @@ Base.broadcastable(pv::PartitionedVector) = pv
 
 struct PartitionedVectorStyle <: Base.Broadcast.BroadcastStyle end
 
-Base.BroadcastStyle(::Type{PartitionedVector{T}}) where T = PartitionedVectorStyle()
+Base.BroadcastStyle(::Type{PartitionedVector{T}}) where {T} = PartitionedVectorStyle()
 
-Base.BroadcastStyle(::PartitionedVectorStyle, ::Base.Broadcast.BroadcastStyle) = PartitionedVectorStyle()
-Base.BroadcastStyle(::Base.Broadcast.BroadcastStyle, ::PartitionedVectorStyle) = PartitionedVectorStyle()
+Base.BroadcastStyle(::PartitionedVectorStyle, ::Base.Broadcast.BroadcastStyle) =
+  PartitionedVectorStyle()
+Base.BroadcastStyle(::Base.Broadcast.BroadcastStyle, ::PartitionedVectorStyle) =
+  PartitionedVectorStyle()
 
-function Base.copyto!(dest::PartitionedVector, bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle})
+function Base.copyto!(
+  dest::PartitionedVector,
+  bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle},
+)
   bcf = Base.Broadcast.flatten(bc)
   for i in bcf.axes[1]
     filtered = _filter(i, bcf.args)
@@ -31,9 +36,12 @@ _filter(i::Int, arg::PartitionedVector) = arg[i]
 _filter(i::Int, arg::Any) = arg
 _filter(i::Int, args::Tuple) = (_filter(i, args[1]), _filter(i, Base.tail(args))...)
 
-function Base.similar(bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle}, ::Type{ElType}) where ElType
+function Base.similar(
+  bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle},
+  ::Type{ElType},
+) where {ElType}
   pv = find_pv(bc)
-  pvres = similar(pv)  
+  pvres = similar(pv)
   return pvres
 end
 
