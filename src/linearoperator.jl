@@ -1,5 +1,3 @@
-import LinearAlgebra.mul!
-
 """
     partitionedMulOp!(epm::PS.Part_mat, Hv::PartitionedVector, pv_res::PartitionedVector, pv::PartitionedVector, α, β)
 
@@ -52,5 +50,3 @@ function LinearOperator_for_Vector(epm::Part_mat{T}) where T
   B = LinearOperator(T, n, n, true, true, (res, v, α, β) -> partitionedMulOpVec!(epm, Hv, res, v, α, β; epv, epv_hv))
   return B
 end
-
-mul!(res::PartitionedVector, op::AbstractLinearOperator{T}, v::PartitionedVector, α, β) where {T} = op.prod!(res, v, α, β)
