@@ -28,8 +28,7 @@ pkg> test PartitionedVectors
 ```
 
 ## Synopsis
-PartitionedVectors is a wrapper around the `Elemental_pv`, a partitioned data structure defined in [PartitionedStructures.jl](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl), to make it behave as an `AbstractVector`. 
-It implements `PartitionedVector <: DenseVector <: AbstractVector`, as well as elementary operations that can work on it.
+A `PartitionedVector <: DenseVector <: AbstractVector` wraps a `[PartitionedStructures](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl).Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
 
 ## How to use
 <!-- Check the [tutorial](https://JuliaSmoothOptimizers.github.io/PartitionedVectors.jl/stable/). -->
