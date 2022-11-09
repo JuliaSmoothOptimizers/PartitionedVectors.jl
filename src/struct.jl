@@ -13,7 +13,6 @@ Wrap `PartitionedStructures.Elemental_pv` to behave almost as an `AbstractVector
 """
 mutable struct PartitionedVector{T} <: AbstractPartitionedVector{T}
   epv::Elemental_pv{T}
-  vec::Vector{T}
   simulate_vector::Bool
 end
 
@@ -24,14 +23,12 @@ function PartitionedVector(
   kwargs...,
 )
   epv = create_epv(eevar; type = T, kwargs...)
-  vec = Vector{T}(undef, PS.get_n(epv))
-  pv = PartitionedVector{T}(epv, vec, simulate_vector)
+  pv = PartitionedVector{T}(epv, simulate_vector)
   return pv
 end
 
 function PartitionedVector(epv::Elemental_pv{T}; simulate_vector::Bool = false, kwargs...) where {T}
-  vec = Vector{T}(undef, PS.get_n(epv))
-  pv = PartitionedVector{T}(epv, vec, simulate_vector)
+  pv = PartitionedVector{T}(epv, simulate_vector)
   return pv
 end
 
