@@ -42,6 +42,9 @@
   @test -pv32 == -1 * pv32
   @test pv32 - pv32 == 0 * pv32
 
+  pv32 .= 0 
+  @test Vector(pv32) == zeros(Float32, n)
+
   @testset "other methods" begin
     @test firstindex(pv32) == 1
     @test lastindex(pv32) == N
@@ -62,4 +65,7 @@ end
 
   set!(pv, v)
   @test Vector(pv) == v
+
+  pv .= 1
+  @test Vector(pv) == ones(n)
 end
