@@ -49,12 +49,31 @@ which will be of usage 1.
 If you want a vector for usage 2 you have to set `simulate_vector` optional argument to `true`
 ```@example PV
 pv_vec = PartitionedVector(Uis; simulate_vector=true)
-# set each element as a view of rand(length(pv_vec))
-set!(pv_vec, rand(length(pv_vec))) 
+```
+The distinction between both is about how they form a `Vector` from them.
+For example:
+```julia
+pv .= pv_vec
+pv == pv_vec
+```
+which means that elements from `pv` are of same value than those of `pv_vec`.
+However, `Vector(pv)` relies on `build!` satisfying the specified usage and consequently
+```julia
+Vector(pv) != Vector(pv_vec)
 ```
 
+You can set a `PartitionedVector` of usage 2 from a `Vector` with
+```@example PV
+set!(pv_vec, rand(length(pv_vec))) 
+```
+Warning: `set!()` applied on `PartitionedVector` of usage 1 doesn't have sense, and produces an error.
+
 PartitionedVectors.jl specify several methods from various modules.
-Warning: you have to be careful when you mix both usages in a single operation, by default, the result will take usage 1.
+For operations that are not in place, the result will take usage 1.
+
+Warning: you have to be careful when you mix both usages in a single operation, because it could have not any sense.
+Keep in mind what result of `Vector(pv)` do you want.
+
 Base.jl:
 - elementary operations `+, -, *, ==` for PartitionedVectors.
 ```@example PV
@@ -66,9 +85,16 @@ Moreover, it supports the broadcast for the same operations (unfortunately not i
 pv .+ pv == 2 .* pv
 pv .- pv == 0 .* pv
 ```
+Special case when both usages get the same `Vector`
+```@example PV
+pv .= 0
+pv_vec .= pv
+Vector(pv) == Vector(pv_vec)
+```
 - supports methods related to `AbstractArray`s such as: 
   - `get_index`, `set_index!` refers to the `i`-th element vector of `pv`
   ```@example PV
+  pv .= 1
   pv[1]
   ```
   ```@example PV
@@ -84,12 +110,13 @@ pv .- pv == 0 .* pv
   length(pv) == 8
   ```
   note that size and length differ, `length` refers to the biggest index (e.g. $n$) while `size` refers to the number of elements $N$.
-  - `copy`, `similar`;
+  - `copy`, `similar`:
   ```@example PV
   pvcopy = copy(pv)
   pvsimilar = similar(pv)
   ```
-LinearAlgebra:
+
+LinearAlgebra: both `dot, norm` rely on `build!` before applying `dot, norm` on the resulting `Vector`
 ```@example PV
 using LinearAlgebra
 dot(pv,pv) ≈ norm(pv)^2
@@ -97,11 +124,24 @@ dot(pv,pv) ≈ norm(pv)^2
 
 In addition, PartitionedVectors.jl defines a:
 - `LinearOperator` from a `PartitionedMatrix` (see PartitionedStructures.jl) relying on `PartitionedVector`s
-```julia
-using PartitionedStructures
+```@example PV
+using PartitionedStructures, LinearOperators
 epm = PartitionedStructures.identity_epm(Uis)
 lo = LinearOperators.LinearOperator(epm)
 lo * pv
 ```
 Note: `Matrix(lo)` will produce an error, since the default implementation assumes a complete `Vector`-like behaviour.
 - dedicated `CGSolver` from Krylov.jl to solve a partitioned linear system (from a partitioned `LinearOperator`).
+```@example PV
+using Krylov
+solver = Krylov.CgSolver(pv)
+
+pv_gradient = similar(pv)
+(N,) = size(pv)
+for i = 1:N
+  nie = pv_gradient[i].nie #size of a element vector
+  pv_gradient[i] = rand(nie)
+end
+
+Krylov.solve!(solver, lo, -pv_gradient)
+```
