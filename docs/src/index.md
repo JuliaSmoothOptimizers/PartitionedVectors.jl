@@ -6,7 +6,7 @@ Julia ≥ 1.6.
 ## How to install
 This module can be installed with the following command:
 ```julia
-pkg> add https://github.com/paraynaud/PartitionedVectors.jl.git
+pkg> add PartitionedVectors
 pkg> test PartitionedVectors
 ```
 
@@ -14,11 +14,11 @@ pkg> test PartitionedVectors
 A `PartitionedVector <: DenseVector <: AbstractVector` wraps a [PartitionedStructures](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl)`.Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
 
 ## How to use
-Check the [tutorial](https://paraynaud.github.io/PartitionedVectors.jl/dev/tutorial/).
+Check the [tutorial](https://JuliaSmoothOptimizers.github.io/PartitionedVectors.jl/dev/tutorial/).
 
 ## How to Cite
 
-If you use PartitionedVectors.jl in your work, please cite using the format given in [`CITATION.bib`](https://github.com/paraynaud/PartitionedVectors.jl/blob/main/CITATION.bib).
+If you use PartitionedVectors.jl in your work, please cite using the format given in [`CITATION.bib`](https://github.com/JuliaSmoothOptimizers/PartitionedVectors.jl/blob/main/CITATION.bib).
 
 # Bug reports and discussions
 

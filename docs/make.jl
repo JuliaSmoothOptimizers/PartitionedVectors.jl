@@ -14,7 +14,7 @@ makedocs(
 )
 
 deploydocs(
-  repo = "github.com/paraynaud/PartitionedVectors.jl.git",
+  repo = "github.com/JuliaSmoothOptimizers/PartitionedVectors.jl.git",
   push_preview = true,
   devbranch = "main",
 )
