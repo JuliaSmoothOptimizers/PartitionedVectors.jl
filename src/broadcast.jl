@@ -14,7 +14,7 @@ function Base.copyto!(
   bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle},
 )
   bcf = Base.Broadcast.flatten(bc)
-  for i in bcf.axes[1]    
+  for i in bcf.axes[1]
     filtered = _filter(i, bcf.args)
     dest[i].vec .= bcf.f.(filtered...)
   end
