@@ -14,10 +14,9 @@ function Base.copyto!(
   bc::Base.Broadcast.Broadcasted{PartitionedVectorStyle},
 )
   bcf = Base.Broadcast.flatten(bc)
-  for i in bcf.axes[1]
+  for i in bcf.axes[1]    
     filtered = _filter(i, bcf.args)
-    res = bcf.f(filtered...)
-    dest[i] = res
+    dest[i].vec .= bcf.f.(filtered...)
   end
   return dest
 end
@@ -32,7 +31,7 @@ end
 Pass through a `Tuple` to select the `i`-th element if necessary.
 """
 _filter(i::Int, arg::Tuple{}) = ()
-_filter(i::Int, arg::PartitionedVector) = arg[i]
+_filter(i::Int, arg::PartitionedVector) = arg[i].vec
 _filter(i::Int, arg::Any) = arg
 _filter(i::Int, args::Tuple) = (_filter(i, args[1]), _filter(i, Base.tail(args))...)
 
