@@ -10,6 +10,7 @@ function axpy!(
   axpy!(s, x, y, Val(x.simulate_vector), Val(y.simulate_vector))
 end
 
+# y .+= s .* x
 function axpy!(
   s::Y,
   x::PartitionedVector{T},
@@ -17,7 +18,29 @@ function axpy!(
   ::Val{true},
   ::Val{true},
 ) where {T <: Number, Y <: Number}
-  y .+= s .* x
+  N = x.epv.N
+  for i in 1:N
+    yi = y[i].vec
+    xi = x[i].vec
+    axpy!(s, xi, yi)
+  end
+  return y
+end
+
+# y .+= s .* x
+function axpy!(
+  s::Y,
+  x::PartitionedVector{T},
+  y::PartitionedVector{T},
+  ::Val{false},
+  ::Val{false},
+) where {T <: Number, Y <: Number}
+  N = x.epv.N
+  for i in 1:N
+    yi = y[i].vec
+    xi = x[i].vec
+    axpy!(s, xi, yi)
+  end
   return y
 end
 
@@ -32,18 +55,8 @@ function axpy!(
   build!(y)
   xvector = x.epv.v
   yvector = y.epv.v
-  epv_from_v!(y.epv, s .* xvector .+ yvector)
-  return y
-end
-
-function axpy!(
-  s::Y,
-  x::PartitionedVector{T},
-  y::PartitionedVector{T},
-  ::Val{false},
-  ::Val{false},
-) where {T <: Number, Y <: Number}
-  y .+= s .* x
+  axpy!(s, xvector, yvector)
+  epv_from_v!(y.epv, yvector)
   return y
 end
 
@@ -56,6 +69,7 @@ function axpby!(
   axpby!(s, x, t, y, Val(x.simulate_vector), Val(y.simulate_vector))
 end
 
+# s .* xvector .+ yvector .* t
 function axpby!(
   s::Y1,
   x::PartitionedVector{T},
@@ -68,10 +82,12 @@ function axpby!(
   build!(y)
   xvector = x.epv.v
   yvector = y.epv.v
-  epv_from_v!(y.epv, s .* xvector .+ yvector .* t)
+  axpby!(s, xvector, t, yvector)
+  epv_from_v!(y.epv, yvector)
   return y
 end
 
+# y .= x .* s .+ y .* t
 function axpby!(
   s::Y1,
   x::PartitionedVector{T},
@@ -80,10 +96,16 @@ function axpby!(
   ::Val{false},
   ::Val{false},
 ) where {T <: Number, Y1 <: Number, Y2 <: Number}
-  y .= x .* s .+ y .* t
+  N = x.epv.N
+  for i in 1:N
+    yi = y[i].vec
+    xi = x[i].vec
+    axpby!(s, xi, t, yi)
+  end
   return y
 end
 
+# y .= x .* s .+ y .* t
 function axpby!(
   s::Y1,
   x::PartitionedVector{T},
@@ -92,7 +114,12 @@ function axpby!(
   ::Val{true},
   ::Val{true},
 ) where {T <: Number, Y1 <: Number, Y2 <: Number}
-  y .= x .* s .+ y .* t
+  N = x.epv.N
+  for i in 1:N
+    yi = y[i].vec
+    xi = x[i].vec
+    axpby!(s, xi, t, yi)
+  end  
   return y
 end
 
@@ -117,7 +144,7 @@ end
 
 # This way, solver.warm_start stays true at all time.
 # It prevents the else case where r .= b at the beginning of cg!.
-# r is supposed to simulate while b is not supposed to.
+# r is supposed to simulate a vector while b is not supposed to.
 function setproperty!(
   solver::CgSolver{T, T, PartitionedVector{T}},
   sym::Symbol,

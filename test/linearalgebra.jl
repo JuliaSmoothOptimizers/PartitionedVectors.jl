@@ -33,5 +33,9 @@ end
   epm = PS.identity_epm(element_variables; n)
   lo = LinearOperators.LinearOperator(epm)
 
-  lo * pv
+  Vector(lo * pv) == Matrix(epm) * Vector(pv)
+
+  res = similar(pv)
+  mul!(res, lo, pv)
+  @test (@allocated mul!(res, lo, pv)) == 0
 end

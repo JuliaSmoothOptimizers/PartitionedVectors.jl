@@ -76,10 +76,42 @@ end
 
   s = 5.0
   axpy!(s, pv, res)
-  @test res == pv_init + s * pv
+  @test res ≈ pv_init + s * pv
 
   res .= pv_init
   t = 0.3
   axpby!(s, pv, t, res)
-  @test res == pv * s + pv_init * t
+  @test res ≈ pv * s + pv_init * t
+end
+
+@testset "Krylov methods allocations" begin
+  for FC in (Float32, Float64)
+    T = real(FC)
+    N = 5
+    n = 8
+    element_variables = [[1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7], [5, 6, 8], Int[]]
+
+    x = PartitionedVector(element_variables; T, n)
+    y = PartitionedVector(element_variables; T, n)
+    a = rand(FC)
+    b = rand(FC)
+    s = rand(FC)
+    a2 = rand(T)
+    b2 = rand(T)
+    c = rand(T)
+
+    Krylov.@kaxpy!(n, a, x, y)
+    Krylov.@kaxpy!(n, a2, x, y)
+    Krylov.@kaxpby!(n, a, x, b, y)
+    Krylov.@kaxpby!(n, a2, x, b, y)
+    Krylov.@kaxpby!(n, a, x, b2, y)
+    Krylov.@kaxpby!(n, a2, x, b2, y)
+
+    @test (@allocated Krylov.@kaxpy!(n, a, x, y)) == 0
+    @test (@allocated Krylov.@kaxpy!(n, a2, x, y)) == 0
+    @test (@allocated Krylov.@kaxpby!(n, a, x, b, y)) == 0
+    @test (@allocated Krylov.@kaxpby!(n, a2, x, b, y)) == 0
+    @test (@allocated Krylov.@kaxpby!(n, a, x, b2, y)) == 0
+    @test (@allocated Krylov.@kaxpby!(n, a2, x, b2, y)) == 0
+  end
 end
