@@ -54,6 +54,9 @@ function build!(pv::PartitionedVector, ::Val{true})
       eev = PS.get_eev_set(epv, index_element)
       val = PS.get_vec_from_indices(eev, i)
       vec[i] = val
+    else 
+      @warn "No element contribute to the $i-th variable. \n Its value in the assocaited Vector is set to 0" 
+      vec[i] = 0
     end
   end
   return pv

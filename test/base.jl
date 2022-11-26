@@ -69,3 +69,13 @@ end
   pv .= 1
   @test Vector(pv) == ones(n)
 end
+
+@testset "warning build" begin
+  N = 5
+  n = 8
+  element_variables = [[1, 2, 3, 4], [3, 4, 5, 6], [5, 6, 7], [5, 6, 4], Int[]]
+
+  pv = PartitionedVector(element_variables; simulate_vector = true, n)
+
+  build!(pv)
+end
