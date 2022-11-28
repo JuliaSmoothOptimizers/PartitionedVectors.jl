@@ -97,6 +97,7 @@ function axpby!(
 end
 
 function CgSolver(pv::PartitionedVector{T}) where {T}
+  n = length(pv)
   Δx = similar(pv; simulate_vector = true)
   Δx .= (T)(0) # by setting Δx .= 0, we ensure that at each iterate the initial point `r` is 0.
   x = similar(pv; simulate_vector = true)
@@ -110,7 +111,7 @@ function CgSolver(pv::PartitionedVector{T}) where {T}
   z = similar(pv; simulate_vector = true)
   z .= (T)(0)
   stats = Krylov.SimpleStats(0, false, false, T[], T[], T[], "unknown")
-  solver = Krylov.CgSolver{T, T, PartitionedVector{T}}(Δx, x, r, p, Ap, z, true, stats)
+  solver = Krylov.CgSolver{T, T, PartitionedVector{T}}(n, n, Δx, x, r, p, Ap, z, true, stats)
   return solver
 end
 
