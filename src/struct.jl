@@ -40,11 +40,11 @@ If `pv.simulate=false`, it aggregates contributions from elemental vectors.
 If `pv.simulate=true`, common variables among element vectors value the same.
 For each index 1 ≤ `i` ≤ n, , `build!` will take the first element containing `i` and sets `pv.epv.v[i]` to its value.
 """
-build!(pv::PartitionedVector) = build!(pv, Val(pv.simulate_vector))
+build!(pv::PartitionedVector; kwargs...) = build!(pv, Val(pv.simulate_vector); kwargs...)
 
 build!(pv::PartitionedVector, ::Val{false}) = build_v!(pv.epv)
 
-function build!(pv::PartitionedVector, ::Val{true})
+function build!(pv::PartitionedVector, ::Val{true}; warn::Bool=true)
   epv = pv.epv
   vec = epv.v
   component_list = epv.component_list
@@ -55,7 +55,7 @@ function build!(pv::PartitionedVector, ::Val{true})
       val = PS.get_vec_from_indices(eev, i)
       vec[i] = val
     else 
-      @warn "No element contribute to the $i-th variable. \n Its value in the assocaited Vector is set to 0" 
+      warn && @warn "No element contribute to the $i-th variable. \n Its value in the assocaited Vector is set to 0" 
       vec[i] = 0
     end
   end

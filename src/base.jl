@@ -89,8 +89,8 @@ copy(pv::PartitionedVector{T}; simulate_vector::Bool = pv.simulate_vector) where
 similar(pv::PartitionedVector{T}; simulate_vector::Bool = pv.simulate_vector) where {T <: Number} =
   PartitionedVector{T}(similar(pv.epv), simulate_vector)
 
-function Base.Vector(pv::PartitionedVector{T}) where {T}
-  build!(pv)
+function Base.Vector(pv::PartitionedVector{T}; kwargs...) where {T}
+  build!(pv; kwargs...)
   vector = pv.epv.v
   return Vector{T}(copy(vector))
 end

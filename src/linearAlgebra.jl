@@ -2,15 +2,15 @@ import Base.*
 import LinearAlgebra.mul!
 import LinearAlgebra: norm, dot
 
-function norm(pv::PartitionedVector, p::Real = 2)
-  build!(pv)
+function norm(pv::PartitionedVector, p::Real = 2; kwargs...)
+  build!(pv; kwargs...)
   _norm = norm(get_v(pv.epv), p)
   return _norm
 end
 
-function dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}) where {T}
-  build!(pv1)
-  build!(pv2)
+function dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}; kwargs...) where {T}
+  build!(pv1; kwargs...)
+  build!(pv2; kwargs...)
   dot(get_v(pv1.epv), get_v(pv2.epv))
 end
 

@@ -76,10 +76,11 @@ function axpby!(
   t::Y2,
   y::PartitionedVector{T},
   ::Val{false},
-  ::Val{true},
+  ::Val{true};
+  kwargs...
 ) where {T <: Number, Y1 <: Number, Y2 <: Number}
-  build!(x)
-  build!(y)
+  build!(x; kwargs...)
+  build!(y; kwargs...)
   xvector = x.epv.v
   yvector = y.epv.v
   axpby!(s, xvector, t, yvector)
