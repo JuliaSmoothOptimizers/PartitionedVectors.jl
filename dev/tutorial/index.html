@@ -28,7 +28,7 @@ dot(pv,pv) ≈ norm(pv)^2</code></pre><pre class="documenter-example-output">tru
 epm = PartitionedStructures.identity_epm(Uis)
 lo = LinearOperators.LinearOperator(epm)
 lo * pv</code></pre><pre class="documenter-example-output">PartitionedVector{Float64}
-[0.0, 5.0e-324, 6.9373558439095e-310, 3.0e-323, 5.0e-324, 6.93735584390954e-310, 1.3e-322, 1.5e-323]</pre><p>Note: <code>Matrix(lo)</code> will produce an error, since the default implementation assumes a complete <code>Vector</code>-like behaviour.</p><ul><li>dedicated <code>CGSolver</code> from Krylov.jl to solve a partitioned linear system (from a partitioned <code>LinearOperator</code>).</li></ul><pre><code class="language-julia">using Krylov
+[6.94820013742013e-310, 6.94820013740116e-310, 6.94820013742646e-310, 6.9481719986836e-310, 6.94819217742337e-310, 6.94820298104025e-310, 5.0e-324, NaN]</pre><p>Note: <code>Matrix(lo)</code> will produce an error, since the default implementation assumes a complete <code>Vector</code>-like behaviour.</p><ul><li>dedicated <code>CGSolver</code> from Krylov.jl to solve a partitioned linear system (from a partitioned <code>LinearOperator</code>).</li></ul><pre><code class="language-julia">using Krylov
 solver = Krylov.CgSolver(pv)
 
 pv_gradient = similar(pv)
@@ -38,19 +38,25 @@ for i = 1:N
   pv_gradient[i] = rand(nie)
 end
 
-Krylov.solve!(solver, lo, -pv_gradient)</code></pre><pre class="documenter-example-output">┌───────────────┬──────────────────────────────────┬──────────────────┐
-│Krylov.CgSolver│                Precision: Float64│ Architecture: GPU│
-├───────────────┼──────────────────────────────────┼──────────────────┤
-│      Attribute│                              Type│              Size│
-├───────────────┼──────────────────────────────────┼──────────────────┤
-│             Δx│        PartitionedVector{Float64}│                 8│
-│              x│        PartitionedVector{Float64}│                 8│
-│              r│        PartitionedVector{Float64}│                 8│
-│              p│        PartitionedVector{Float64}│                 8│
-│             Ap│        PartitionedVector{Float64}│                 8│
-│              z│        PartitionedVector{Float64}│                 8│
-│     warm_start│                              Bool│                 0│
-└───────────────┴──────────────────────────────────┴──────────────────┘
+Krylov.solve!(solver, lo, -pv_gradient)</code></pre><pre class="documenter-example-output">┌──────────────────┬──────────────────────────┬──────────────────┐
+│          CgSolver│                  nrows: 8│          ncols: 8│
+├──────────────────┼──────────────────────────┼──────────────────┤
+│Precision: Float64│         Architecture: GPU│Storage: 163 bytes│
+├──────────────────┼──────────────────────────┼──────────────────┤
+│         Attribute│                      Type│              Size│
+├──────────────────┼──────────────────────────┼──────────────────┤
+│                 m│                     Int64│           8 bytes│
+│                 n│                     Int64│           8 bytes│
+│                Δx│PartitionedVector{Float64}│          16 bytes│
+│                 x│PartitionedVector{Float64}│          16 bytes│
+│                 r│PartitionedVector{Float64}│          16 bytes│
+│                 p│PartitionedVector{Float64}│          16 bytes│
+│                Ap│PartitionedVector{Float64}│          16 bytes│
+│                 z│PartitionedVector{Float64}│          16 bytes│
+│        warm_start│                      Bool│            1 byte│
+│             stats│Krylov.SimpleStats{Float64}│          50 bytes│
+└──────────────────┴──────────────────────────┴──────────────────┘
+
 Simple stats
  niter: 3
  solved: true
@@ -59,4 +65,4 @@ Simple stats
  Aresiduals: []
  κ₂(A): []
  status: solution good enough given atol and rtol
-</pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Sunday 27 November 2022 18:54">Sunday 27 November 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+</pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 5 December 2022 15:49">Monday 5 December 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
