@@ -8,6 +8,17 @@ function norm(pv::PartitionedVector, p::Real = 2; kwargs...)
   return _norm
 end
 
+"""
+    dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}; kwargs...) where {T}
+    dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{true}, ::Val{false}; kwargs...) where {T}
+    dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{false}, ::Val{true}; kwargs...) where {T}
+    dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{true}, ::Val{true}; kwargs...) where {T}
+    dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{false}, ::Val{false}; kwargs...) where {T}
+
+Compute the dot product between two partitioned vectors.
+Methods having `Val{true}` and `Val{false}` as parameters compute dedicated `dot` routines depending the usage of `pv1, pv2`.
+See the [tutorial](https://juliasmoothoptimizers.github.io/PartitionedVectors.jl/stable/tutorial/) for more details about the usage of a PartitionedVector.
+"""
 dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}; kwargs...) where {T} = dot(pv1, pv2, Val(pv1.simulate_vector), Val(pv2.simulate_vector); kwargs...)
 
 function dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{true}, ::Val{false}; kwargs...) where {T}
