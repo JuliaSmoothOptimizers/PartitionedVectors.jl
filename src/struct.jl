@@ -42,7 +42,7 @@ For each index 1 ≤ `i` ≤ n, , `build!` will take the first element containin
 """
 build!(pv::PartitionedVector; kwargs...) = build!(pv, Val(pv.simulate_vector); kwargs...)
 
-build!(pv::PartitionedVector, ::Val{false}) = build_v!(pv.epv)
+build!(pv::PartitionedVector, ::Val{false}; kwargs...) = build_v!(pv.epv)
 
 function build!(pv::PartitionedVector, ::Val{true}; warn::Bool=true)
   epv = pv.epv
