@@ -21,6 +21,9 @@
   @test dot(pv2, pv2) == norm(pv2)^2
 
   @test dot(pv1, pv2) == dot(Vector(pv1), Vector(pv2))
+  @test dot(pv2, pv1) == dot(Vector(pv1), Vector(pv2))
+  @test dot(pv1, pv1) == dot(Vector(pv1), Vector(pv1))
+  @test dot(pv2, pv2) == dot(Vector(pv2), Vector(pv2))
 end
 
 @testset "LinearOperator" begin
