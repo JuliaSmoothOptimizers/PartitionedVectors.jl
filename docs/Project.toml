@@ -6,4 +6,4 @@ PartitionedStructures = "a6683cb1-4e99-4d03-b5b5-b79ed0acabcf"
 PartitionedVectors = "9d5e22db-ddc8-46c9-8309-91b035e7f733"
 
 [compat]
-Documenter = "~0.25"
+Documenter = "~0.27"
