@@ -19,7 +19,7 @@ function axpy!(
   ::Val{true},
 ) where {T <: Number, Y <: Number}
   N = x.epv.N
-  for i in 1:N
+  for i = 1:N
     yi = y[i].vec
     xi = x[i].vec
     axpy!(s, xi, yi)
@@ -36,7 +36,7 @@ function axpy!(
   ::Val{false},
 ) where {T <: Number, Y <: Number}
   N = x.epv.N
-  for i in 1:N
+  for i = 1:N
     yi = y[i].vec
     xi = x[i].vec
     axpy!(s, xi, yi)
@@ -77,7 +77,7 @@ function axpby!(
   y::PartitionedVector{T},
   ::Val{false},
   ::Val{true};
-  kwargs...
+  kwargs...,
 ) where {T <: Number, Y1 <: Number, Y2 <: Number}
   build!(x; kwargs...)
   build!(y; kwargs...)
@@ -98,7 +98,7 @@ function axpby!(
   ::Val{false},
 ) where {T <: Number, Y1 <: Number, Y2 <: Number}
   N = x.epv.N
-  for i in 1:N
+  for i = 1:N
     yi = y[i].vec
     xi = x[i].vec
     axpby!(s, xi, t, yi)
@@ -116,11 +116,11 @@ function axpby!(
   ::Val{true},
 ) where {T <: Number, Y1 <: Number, Y2 <: Number}
   N = x.epv.N
-  for i in 1:N
+  for i = 1:N
     yi = y[i].vec
     xi = x[i].vec
     axpby!(s, xi, t, yi)
-  end  
+  end
   return y
 end
 

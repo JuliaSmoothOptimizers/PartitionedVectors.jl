@@ -87,14 +87,13 @@ end
 
   pv = PartitionedVector(element_variables; simulate_vector = true, n)
 
-  build!(pv; warn=false)
-  norm(pv; warn=false)
-  dot(pv, pv; warn=false)
+  build!(pv; warn = false)
+  norm(pv; warn = false)
+  dot(pv, pv; warn = false)
 
   pv = PartitionedVector(element_variables; n)
 
-  build!(pv; warn=false)
-  norm(pv; warn=false)
-  dot(pv, pv; warn=false)
-
+  build!(pv; warn = false)
+  norm(pv; warn = false)
+  dot(pv, pv; warn = false)
 end
