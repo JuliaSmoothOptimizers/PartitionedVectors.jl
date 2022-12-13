@@ -47,16 +47,13 @@ build!(pv::PartitionedVector, ::Val{false}) = build_v!(pv.epv)
 function build!(pv::PartitionedVector, ::Val{true}; warn::Bool=true)
   epv = pv.epv
   vec = epv.v
-  component_list = epv.component_list
-  for i = 1:length(vec)
-    if !isempty(component_list[i])
-      index_element = component_list[i][1]
-      eev = PS.get_eev_set(epv, index_element)
-      val = PS.get_vec_from_indices(eev, i)
-      vec[i] = val
-    else 
-      warn && @warn "No element contribute to the $i-th variable. \n Its value in the assocaited Vector is set to 0" 
-      vec[i] = 0
+  N = epv.N
+  vec .= 0
+  for i = 1:N
+    eevi = pv[i].vec
+    indices = pv[i].indices
+    for (index,j) in enumerate(indices)
+      vec[j] = eevi[index]
     end
   end
   return pv
