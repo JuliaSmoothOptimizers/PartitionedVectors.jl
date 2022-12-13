@@ -54,7 +54,6 @@ end
 
   @test norm(A * x + g) <= 1e-2 * norm(g)
 
-  
   grad = Vector(pv_gradient)
   pm_v = LinearOperator_for_Vector(epm)
   solver_vector = Krylov.CgSolver(pm_v, grad)

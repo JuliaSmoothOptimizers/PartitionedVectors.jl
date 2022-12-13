@@ -44,7 +44,7 @@ build!(pv::PartitionedVector; kwargs...) = build!(pv, Val(pv.simulate_vector); k
 
 build!(pv::PartitionedVector, ::Val{false}; kwargs...) = build_v!(pv.epv)
 
-function build!(pv::PartitionedVector, ::Val{true}; warn::Bool=true)
+function build!(pv::PartitionedVector, ::Val{true}; warn::Bool = true)
   epv = pv.epv
   vec = epv.v
   N = epv.N
@@ -52,7 +52,7 @@ function build!(pv::PartitionedVector, ::Val{true}; warn::Bool=true)
   for i = 1:N
     eevi = pv[i].vec
     indices = pv[i].indices
-    for (index,j) in enumerate(indices)
+    for (index, j) in enumerate(indices)
       vec[j] = eevi[index]
     end
   end
