@@ -21,7 +21,7 @@ function dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{true}, 
   return acc
 end
 
-dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{false}, ::Val{true}; kwargs...) where {T} = dot(pv2, pv1)
+dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{false}, ::Val{true}; kwargs...) where {T} = dot(pv2, pv1, Val(true), Val(false))
 
 function dot(pv1::PartitionedVector{T}, pv2::PartitionedVector{T}, ::Val{true}, ::Val{true}; kwargs...) where {T}
   build!(pv1; kwargs...)
