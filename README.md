@@ -1,4 +1,4 @@
-# PartitionedVectors
+# PartitionedVectors: A wrapper around an elemental partitioned vector to act as a vector
 
 | **Documentation** | **Linux/macOS/Windows/FreeBSD** | **Coverage** | **DOI** |
 |:-----------------:|:-------------------------------:|:------------:|:-------:|
