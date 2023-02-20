@@ -1,7 +1,7 @@
 name = "PartitionedVectors"
 uuid = "9d5e22db-ddc8-46c9-8309-91b035e7f733"
 authors = ["Paul Raynaud <paul.raynaud@polymtl.ca>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 Krylov = "ba0b0d4f-ebba-5204-a429-3ac8c609bfb7"
@@ -12,7 +12,7 @@ PartitionedStructures = "a6683cb1-4e99-4d03-b5b5-b79ed0acabcf"
 [compat]
 Krylov = "0.9.0"
 LinearOperators = "2.4.0"
-PartitionedStructures = "0.1.4"
+PartitionedStructures = "0.1.4, 0.1.5"
 julia = "^1.6.0"
 
 [extras]
