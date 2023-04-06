@@ -25,3 +25,11 @@ Manifest.toml
 
 # working repositories
 dvpt/**
+
+# Related to BenchmarkCI
+/.benchmarkci
+/benchmark/*.json
+
+# Related to PkgBenchmark
+benchmark/*.json
+benchmark/judgement.md
