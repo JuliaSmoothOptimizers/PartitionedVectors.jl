@@ -19,11 +19,13 @@ function axpy!(
   ::Val{true},
 ) where {T <: Number, Y <: Number}
   N = x.epv.N
-  for i = 1:N
-    yi = y[i].vec
-    xi = x[i].vec
-    axpy!(s, xi, yi)
-  end
+  # for i = 1:N
+  #   yi = y[i].vec
+  #   xi = x[i].vec
+  #   axpy!(s, xi, yi)
+  # end
+  axpy!(s, x.epv.v, y.epv.v)
+  epv_from_v!(y.epv, y.epv.v)
   return y
 end
 
@@ -69,7 +71,7 @@ function axpby!(
   axpby!(s, x, t, y, Val(x.simulate_vector), Val(y.simulate_vector))
 end
 
-# s .* xvector .+ yvector .* t
+# y .= s .* xvector .+ yvector .* t
 function axpby!(
   s::Y1,
   x::PartitionedVector{T},
@@ -115,12 +117,14 @@ function axpby!(
   ::Val{true},
   ::Val{true},
 ) where {T <: Number, Y1 <: Number, Y2 <: Number}
-  N = x.epv.N
-  for i = 1:N
-    yi = y[i].vec
-    xi = x[i].vec
-    axpby!(s, xi, t, yi)
-  end
+  # N = x.epv.N
+  # for i = 1:N
+  #   yi = y[i].vec
+  #   xi = x[i].vec
+  #   axpby!(s, xi, t, yi)
+  # end
+  axpby!(s, x.epv.v, t, y.epv.v)
+  epv_from_v!(y.epv, y.epv.v)
   return y
 end
 

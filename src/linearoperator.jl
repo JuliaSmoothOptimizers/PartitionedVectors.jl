@@ -21,7 +21,7 @@ end
 function LinearOperators.LinearOperator(epm::Part_mat{T}) where {T}
   n = PS.get_n(epm)
   Hv = PartitionedVector(epv_from_epm(epm))
-  Hv.simulate_vector = false
+  # Hv.simulate_vector = false
   B = LinearOperator(
     T,
     n,
