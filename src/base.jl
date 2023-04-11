@@ -51,7 +51,9 @@ function (+)(pv1::PartitionedVector, pv2::PartitionedVector)
   epv2 = pv2.epv
   _epv = (+)(epv1, epv2)
   simulate_vector = min(pv1.simulate_vector, pv2.simulate_vector)
-  return PartitionedVector(_epv; simulate_vector)
+  pv = PartitionedVector(_epv; simulate_vector)
+  pv.epv.v .= epv1.v .+ epv2.v
+  return pv
 end
 
 function (-)(pv1::PartitionedVector, pv2::PartitionedVector)
@@ -59,21 +61,27 @@ function (-)(pv1::PartitionedVector, pv2::PartitionedVector)
   epv2 = pv2.epv
   _epv = (-)(epv1, epv2)
   simulate_vector = min(pv1.simulate_vector, pv2.simulate_vector)
-  return PartitionedVector(_epv; simulate_vector)
+  pv = PartitionedVector(_epv; simulate_vector)
+  pv.epv.v .= epv1.v .- epv2.v
+  return pv
 end
 
 function (-)(pv::PartitionedVector)
   epv = pv.epv
   _epv = (-)(epv)
   simulate_vector = pv.simulate_vector
-  return PartitionedVector(_epv; simulate_vector)
+  pv = PartitionedVector(_epv; simulate_vector)
+  pv.epv.v .-= epv.v
+  return pv
 end
 
 function (*)(pv::PartitionedVector{Y}, val::T) where {Y <: Number, T <: Number}
   epv = pv.epv
   _epv = (*)(epv, val)
   simulate_vector = pv.simulate_vector
-  return PartitionedVector(_epv; simulate_vector)
+  pv = PartitionedVector(_epv; simulate_vector)
+  pv.epv.v .= val .* epv.v
+  return pv
 end
 
 (*)(val::T, pv::PartitionedVector{Y}) where {Y <: Number, T <: Number} = (*)(pv, val)

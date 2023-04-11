@@ -29,6 +29,9 @@ end
 
 function PartitionedVector(epv::Elemental_pv{T}; simulate_vector::Bool = false, kwargs...) where {T}
   pv = PartitionedVector{T}(epv, simulate_vector)
+  if simulate_vector
+    build_v!(pv.epv)
+  end
   return pv
 end
 
@@ -44,20 +47,8 @@ build!(pv::PartitionedVector; kwargs...) = build!(pv, Val(pv.simulate_vector); k
 
 build!(pv::PartitionedVector, ::Val{false}; kwargs...) = build_v!(pv.epv)
 
-function build!(pv::PartitionedVector, ::Val{true}; warn::Bool = true)
-  epv = pv.epv
-  vec = epv.v
-  N = epv.N
-  vec .= 0
-  for i = 1:N
-    eevi = pv[i].vec
-    indices = pv[i].indices
-    for (index, j) in enumerate(indices)
-      vec[j] = eevi[index]
-    end
-  end
-  return pv
-end
+# every operation made should maintain pv.epv.v to the Vector it represents
+build!(pv::PartitionedVector, ::Val{true}; warn::Bool = true) = ()
 
 """
     set!(pv::PartitionedVector{T}, v::Vector{T})
@@ -66,8 +57,24 @@ Set inplace `pv` such that each element values Uᵢv.
 """
 set!(pv::PartitionedVector{T}, v::Vector{T}) where {T} = set!(pv, v, Val(pv.simulate_vector))
 
+function set!(pv::PartitionedVector{T}, v::Vector{T}, ::Val{false}) where {T}
+  @warn "cannot set a PartitionedVector that doesn't represent a Vector from a Vector"
+  return pv
+end
+
 function set!(pv::PartitionedVector{T}, v::Vector{T}, ::Val{true}) where {T}
   epv = pv.epv
   epv_from_v!(epv, v)
+  epv.v.= v
+  return pv
+end
+
+setproperty!(pv::PartitionedVector{T}, sym::Symbol, val::Bool) where {T} = setproperty!(pv, sym, val, Val(pv.simulate_vector))
+
+function setproperty!(pv::PartitionedVector{T}, sym::Symbol, val::Bool, ::Val{false}) where {T}
+  if sym === :simulate_vector && val == true
+    build_v!(pv)
+    setfield!(pv, sym, val)
+  end
   return pv
 end

@@ -74,4 +74,4 @@ end
 mul!(res::PartitionedVector, op::AbstractLinearOperator{T}, v::PartitionedVector, α, β) where {T} =
   op.prod!(res, v, α, β)
 
-*(op::AbstractLinearOperator{T}, pv::PartitionedVector) where {T} = mul!(similar(pv), op, pv)
+*(op::AbstractLinearOperator{T}, pv::PartitionedVector) where {T} = mul!(similar(pv; simulate_vector=false), op, pv)
