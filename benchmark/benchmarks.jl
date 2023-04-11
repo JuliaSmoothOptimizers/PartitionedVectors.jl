@@ -1,6 +1,10 @@
+using LinearAlgebra, StatsBase
 using BenchmarkTools
-using Kylov, LinearAlgebra
+using Krylov, LinearOperators 
+using PartitionedStructures
 using PartitionedVectors
+
+const PS = PartitionedStructures
 
 const SUITE = BenchmarkGroup()
 
