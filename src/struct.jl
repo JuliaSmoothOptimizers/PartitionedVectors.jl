@@ -9,7 +9,7 @@ abstract type AbstractPartitionedVector{T} <: DenseVector{T} end # for Krylov
 """
     PartitionedVector{T} <: AbstractPartitionedVector{T}
 
-Wrap `PartitionedStructures.Elemental_pv` to behave almost as an `AbstractVector`.
+Wrap `PartitionedStructures.Elemental_pv` to behave as an `AbstractVector`.
 """
 mutable struct PartitionedVector{T} <: AbstractPartitionedVector{T}
   epv::Elemental_pv{T}

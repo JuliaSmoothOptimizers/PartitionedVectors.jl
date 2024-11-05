@@ -26,7 +26,7 @@ getindex(pv::PartitionedVector, inds...) = PS.get_eev_set(pv.epv)[inds...]
     setindex!(pv::PartitionedVector{T}, val::T, index::Int) where T<:Number
     setindex!(pv::PartitionedVector{T}, val::Vector{T}, index::Int) where T<:Number
 
-Set `pv[index]` (e.g. the `index`-th element vector) to `val`.
+Set `pv[index]` (i.e. the `index`-th element vector) to `val`.
 """
 function setindex!(pv::PartitionedVector, eev::Elemental_elt_vec, index::Int)
   get_eev_value(pv.epv, index) .= PS.get_vec(eev)

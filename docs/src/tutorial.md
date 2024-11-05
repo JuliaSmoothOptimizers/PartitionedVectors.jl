@@ -1,6 +1,6 @@
 # PartitionedVectors.jl Tutorial
 
-A `PartitionedVector <: DenseVector <: AbstractVector` wraps a `[PartitionedStructures](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl).Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
+A `PartitionedVector <: DenseVector <: AbstractVector` wraps a [`PartitionedStructures`](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl)`.Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
 For now, `PartitionedVector` is the keystone to define [PartiallySeparableNLPModel](https://github.com/JuliaSmoothOptimizers/PartiallySeparableNLPModels.jl)s, and then to consequently:
 - replace `Vector` in [JSOSolvers.jl](https://github.com/JuliaSmoothOptimizers/JSOSolvers.jl); 
 - replace `Vector` in [KrylovSolvers.jl](https://github.com/JuliaSmoothOptimizers/Krylov.jl);
@@ -35,8 +35,8 @@ In optimization methods, you use it to store $\nabla f_i (U_i x)$, $y_i = \nabla
 ```math
  \nabla^2 f(x_k) s \approx B_k s = (\sum_{i=1}^N U_i^\top B_{k,i} U_i ) s = \sum_{i=1}^N U_i^\top (B_{k,i} U_i s) .
 ```
-- usage 2: represent simultaneously a vector $x \in \mathbb{R}^n$ and the application of every $U_i$ on to $x$: $U_i x, \forall i$.
-By construction, the elements parametrized the same variables (for exemple `U1` and `U3` are parametrized by the third variable) share the same values.
+- usage 2: represent simultaneously a vector $x \in \mathbb{R}^n$ and the application of every $U_i$ onto $x$: $U_i x, \forall i$.
+By construction, the elements parametrized by the same variables (for exemple `U1` and `U3` are parametrized by the third variable) share the same values.
 In optimization methods, it allows to store the current point $x_k$ or step $s_k$, which always comes in handy to evaluate $f_i(U_i x), \nabla f_i(U_i x)$ or $B_{k,i} U_i s$.
 
 Any methods exploiting partially separable concepts will have to manipulate both usages at the same time, in particular the solvers from JSOSolvers.jl and Krylov.jl.
@@ -66,15 +66,15 @@ You can set a `PartitionedVector` of usage 2 from a `Vector` with
 ```@example PV
 set!(pv_vec, rand(length(pv_vec))) 
 ```
-Warning: `set!()` applied on `PartitionedVector` of usage 1 doesn't have sense, and produces an error.
+**Warning**: the application `set!()` on `PartitionedVector` of usage 1 doesn't have sense, and produces an error.
 
 PartitionedVectors.jl specify several methods from various modules.
 For operations that are not in place, the result will take usage 1.
 
-Warning: you have to be careful when you mix both usages in a single operation, because it could have not any sense.
-Keep in mind what result of `Vector(pv)` do you want.
+**Warning**: you have to be careful when you mix both usages in a single operation, because the result may have no meaning.
+Keep in mind the result you expect for `Vector(pv)`.
 
-Base.jl:
+**Base.jl**:
 - elementary operations `+, -, *, ==` for PartitionedVectors.
 ```@example PV
 pv + pv == 2 * pv
@@ -116,7 +116,7 @@ Vector(pv) == Vector(pv_vec)
   pvsimilar = similar(pv)
   ```
 
-LinearAlgebra: both `dot, norm` rely on `build!` before applying `dot, norm` on the resulting `Vector`
+**LinearAlgebra**: both `dot` and `norm` rely on `build!(::PartitionedVector)` before applying `dot` or `norm` to the resulting `Vector`
 ```@example PV
 using LinearAlgebra
 dot(pv,pv) ≈ norm(pv)^2
@@ -133,7 +133,7 @@ lo * pv
 Note: `Matrix(lo)` will produce an error, since the default implementation assumes a complete `Vector`-like behaviour.
 - dedicated `CGSolver` from Krylov.jl to solve a partitioned linear system (from a partitioned `LinearOperator`).
 ```@example PV
-using Krylov
+using Krylov # 0.9.0
 solver = Krylov.CgSolver(pv)
 
 pv_gradient = similar(pv)
