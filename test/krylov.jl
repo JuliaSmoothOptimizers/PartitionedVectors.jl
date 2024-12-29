@@ -99,18 +99,18 @@ end
     b2 = rand(T)
     c = rand(T)
 
-    Krylov.@kaxpy!(n, a, x, y)
-    Krylov.@kaxpy!(n, a2, x, y)
-    Krylov.@kaxpby!(n, a, x, b, y)
-    Krylov.@kaxpby!(n, a2, x, b, y)
-    Krylov.@kaxpby!(n, a, x, b2, y)
-    Krylov.@kaxpby!(n, a2, x, b2, y)
+    Krylov.kaxpy!(n, a, x, y)
+    Krylov.kaxpy!(n, a2, x, y)
+    Krylov.kaxpby!(n, a, x, b, y)
+    Krylov.kaxpby!(n, a2, x, b, y)
+    Krylov.kaxpby!(n, a, x, b2, y)
+    Krylov.kaxpby!(n, a2, x, b2, y)
 
-    @test (@allocated Krylov.@kaxpy!(n, a, x, y)) == 0
-    @test (@allocated Krylov.@kaxpy!(n, a2, x, y)) == 0
-    @test (@allocated Krylov.@kaxpby!(n, a, x, b, y)) == 0
-    @test (@allocated Krylov.@kaxpby!(n, a2, x, b, y)) == 0
-    @test (@allocated Krylov.@kaxpby!(n, a, x, b2, y)) == 0
+    @test (@allocated Krylov.kaxpy!(n, a, x, y)) == 0
+    @test (@allocated Krylov.kaxpy!(n, a2, x, y)) == 0
+    @test (@allocated Krylov.kaxpby!(n, a, x, b, y)) == 0
+    @test (@allocated Krylov.kaxpby!(n, a2, x, b, y)) == 0
+    @test (@allocated Krylov.kaxpby!(n, a, x, b2, y)) == 0
     @test (@allocated Krylov.@kaxpby!(n, a2, x, b2, y)) == 0
   end
 end
