@@ -111,6 +111,6 @@ end
     @test (@allocated Krylov.kaxpby!(n, a, x, b, y)) == 0
     @test (@allocated Krylov.kaxpby!(n, a2, x, b, y)) == 0
     @test (@allocated Krylov.kaxpby!(n, a, x, b2, y)) == 0
-    @test (@allocated Krylov.@kaxpby!(n, a2, x, b2, y)) == 0
+    @test (@allocated Krylov.kaxpby!(n, a2, x, b2, y)) == 0
   end
 end
