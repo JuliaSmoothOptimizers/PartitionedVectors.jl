@@ -28,7 +28,7 @@ dot(pv,pv) ≈ norm(pv)^2</code></pre><pre class="documenter-example-output"><co
 epm = PartitionedStructures.identity_epm(Uis)
 lo = LinearOperators.LinearOperator(epm)
 lo * pv</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">PartitionedVector{Float64}
-[6.92284072070787e-310, 6.92284072071104e-310, 6.9228407207142e-310, 6.92284072071736e-310, 6.9228407207205e-310, 6.9228407207237e-310, 6.92284072072685e-310, 6.92284072073e-310]</code></pre><p>Note: <code>Matrix(lo)</code> will produce an error, since the default implementation assumes a complete <code>Vector</code>-like behaviour.</p><ul><li>dedicated <code>CGSolver</code> from Krylov.jl to solve a partitioned linear system (from a partitioned <code>LinearOperator</code>).</li></ul><pre><code class="language-julia hljs">using Krylov # 0.9.0
+[1.485397054e-313, 1.06099789603e-313, 1.0609978958e-313, 1.06099789573e-313, 1.06099789573e-313, 4.2439915829e-313, 4.243991589e-314, 0.0]</code></pre><p>Note: <code>Matrix(lo)</code> will produce an error, since the default implementation assumes a complete <code>Vector</code>-like behaviour.</p><ul><li>dedicated <code>CGSolver</code> from Krylov.jl to solve a partitioned linear system (from a partitioned <code>LinearOperator</code>).</li></ul><pre><code class="language-julia hljs">using Krylov # 0.9.0
 solver = Krylov.CgSolver(pv)
 
 pv_gradient = similar(pv)
@@ -41,7 +41,7 @@ end
 Krylov.solve!(solver, lo, -pv_gradient)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">┌──────────────────┬──────────────────────────┬──────────────────┐
 │          CgSolver│                  nrows: 8│          ncols: 8│
 ├──────────────────┼──────────────────────────┼──────────────────┤
-│Precision: Float64│         Architecture: GPU│Storage: 163 bytes│
+│Precision: Float64│         Architecture: GPU│Storage: 171 bytes│
 ├──────────────────┼──────────────────────────┼──────────────────┤
 │         Attribute│                      Type│              Size│
 ├──────────────────┼──────────────────────────┼──────────────────┤
@@ -54,15 +54,16 @@ Krylov.solve!(solver, lo, -pv_gradient)</code></pre><pre class="documenter-examp
 │                Ap│PartitionedVector{Float64}│          16 bytes│
 │                 z│PartitionedVector{Float64}│          16 bytes│
 │        warm_start│                      Bool│            1 byte│
-│             stats│Krylov.SimpleStats{Float64}│          50 bytes│
+│             stats│Krylov.SimpleStats{Float64}│          58 bytes│
 └──────────────────┴──────────────────────────┴──────────────────┘
 
-Simple stats
+SimpleStats
  niter: 3
  solved: true
  inconsistent: false
  residuals: []
  Aresiduals: []
  κ₂(A): []
+ timer: 32.54ms
  status: solution good enough given atol and rtol
-</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Monday 16 December 2024 14:13">Monday 16 December 2024</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« Home</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Sunday 29 December 2024 20:51">Sunday 29 December 2024</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
