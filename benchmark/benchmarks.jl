@@ -1,6 +1,6 @@
 using LinearAlgebra, StatsBase
 using BenchmarkTools
-using Krylov, LinearOperators 
+using Krylov, LinearOperators
 using PartitionedStructures
 using PartitionedVectors
 
@@ -31,11 +31,11 @@ res = similar(pv_x)
 
 Krylov.solve!(solver, lo_epm, -pv_gradient)
 SUITE["Krylov small PartitionedVectors"] = BenchmarkGroup()
-SUITE["Krylov small PartitionedVectors"] = @benchmarkable Krylov.solve!(solver, lo_epm, -pv_gradient)
+SUITE["Krylov small PartitionedVectors"] =
+  @benchmarkable Krylov.solve!(solver, lo_epm, -pv_gradient)
 
 SUITE["small broadcast"] = BenchmarkGroup()
 SUITE["small broadcast"] = @benchmarkable res .= pv_gradient .+ 3 .* pv_gradient
-
 
 N = 1500
 n = 20000
