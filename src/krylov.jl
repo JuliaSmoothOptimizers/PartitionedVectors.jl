@@ -1,5 +1,5 @@
 import LinearAlgebra: axpy!, axpby!
-import Krylov.CgSolver
+import Krylov.CgWorkspace
 import Base.setproperty!
 
 function axpy!(
@@ -124,7 +124,7 @@ function axpby!(
   return y
 end
 
-function CgSolver(pv::PartitionedVector{T}) where {T}
+function CgWorkspace(pv::PartitionedVector{T}) where {T}
   n = length(pv)
   Δx = similar(pv; simulate_vector = true)
   Δx .= (T)(0) # by setting Δx .= 0, we ensure that at each iterate the initial point `r` is 0.
@@ -132,14 +132,16 @@ function CgSolver(pv::PartitionedVector{T}) where {T}
   x .= (T)(0)
   r = similar(pv; simulate_vector = true)
   r .= (T)(0) # will be reset at each cg! call to 0 because of mul!(r,A,Δx)
+  npc_dir = similar(pv; simulate_vector = true)
+  npc_dir .= (T)(0)
   p = similar(pv; simulate_vector = true)
   p .= (T)(0)
   Ap = similar(pv; simulate_vector = false) # result of the partitioned matrix vector product
   Ap .= (T)(0)
   z = similar(pv; simulate_vector = true)
   z .= (T)(0)
-  stats = Krylov.SimpleStats(0, false, false, T[], T[], T[], 0.0, "unknown")
-  solver = Krylov.CgSolver{T, T, PartitionedVector{T}}(n, n, Δx, x, r, p, Ap, z, true, stats)
+  stats = Krylov.SimpleStats(0, false, false, false, 0, T[], T[], T[], 0.0, "unknown")
+  solver = Krylov.CgWorkspace{T, T, PartitionedVector{T}}(n, n, Δx, x, r, npc_dir, p, Ap, z, true, stats)
   return solver
 end
 
@@ -147,7 +149,7 @@ end
 # It prevents the else case where r .= b at the beginning of cg!.
 # r is supposed to simulate a vector while b is not supposed to.
 function setproperty!(
-  solver::CgSolver{T, T, PartitionedVector{T}},
+  solver::CgWorkspace{T, T, PartitionedVector{T}},
   sym::Symbol,
   val::Bool,
 ) where {T}
