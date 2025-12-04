@@ -3,7 +3,7 @@
 A `PartitionedVector <: DenseVector <: AbstractVector` wraps a [`PartitionedStructures`](https://github.com/JuliaSmoothOptimizers/PartitionedStructures.jl)`.Elemental_pv`, to make [JuliaSmoothOptimizers](https://github.com/JuliaSmoothOptimizers) modules able to exploit the partially separable structure.
 For now, `PartitionedVector` is the keystone to define [PartiallySeparableNLPModel](https://github.com/JuliaSmoothOptimizers/PartiallySeparableNLPModels.jl)s, and then to consequently:
 - replace `Vector` in [JSOSolvers.jl](https://github.com/JuliaSmoothOptimizers/JSOSolvers.jl); 
-- replace `Vector` in [KrylovSolvers.jl](https://github.com/JuliaSmoothOptimizers/Krylov.jl);
+- replace `Vector` in [Krylov.jl](https://github.com/JuliaSmoothOptimizers/Krylov.jl);
 - make `LinearOperator`s relying only on `PartitionedVector`s viable;
 - fit the NLPModels interface (ex: `NLPModels.obj(nlp::PartiallySeparableNLPModel, x::PartitionedVector)` see PartiallySeparableNLPModels.jl for more details).
 
@@ -131,10 +131,10 @@ lo = LinearOperators.LinearOperator(epm)
 lo * pv
 ```
 Note: `Matrix(lo)` will produce an error, since the default implementation assumes a complete `Vector`-like behaviour.
-- dedicated `CGSolver` from Krylov.jl to solve a partitioned linear system (from a partitioned `LinearOperator`).
+- dedicated `CgWorkspace` from Krylov.jl to solve a partitioned linear system (from a partitioned `LinearOperator`).
 ```@example PV
 using Krylov # 0.9.0
-solver = Krylov.CgSolver(pv)
+solver = Krylov.CgWorkspace(pv)
 
 pv_gradient = similar(pv)
 (N,) = size(pv)
@@ -143,5 +143,5 @@ for i = 1:N
   pv_gradient[i] = rand(nie)
 end
 
-Krylov.solve!(solver, lo, -pv_gradient)
+Krylov.krylov_solve!(solver, lo, -pv_gradient)
 ```
