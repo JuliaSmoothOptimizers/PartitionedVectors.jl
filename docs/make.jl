@@ -4,7 +4,6 @@ makedocs(
   modules = [PartitionedVectors],
   doctest = true,
   # linkcheck = true,
-  strict = true,
   format = Documenter.HTML(
     assets = ["assets/style.css"],
     ansicolor = true,

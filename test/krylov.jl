@@ -37,7 +37,7 @@ end
   PS.update!(epm, epv, Float32(2.0) * epv; verbose = false)
   lo_epm = LinearOperators.LinearOperator(epm)
 
-  solver = Krylov.CgSolver(pv_x)
+  solver = Krylov.CgWorkspace(pv_x)
 
   pv_gradient = PartitionedVector(element_variables; T = Float32, n)
   # pv_gradient .= Float32(10.) .* pv_gradient
@@ -46,9 +46,9 @@ end
     pv_gradient[i] = rand(Float32, nie)
   end
 
-  Krylov.solve!(solver, lo_epm, -pv_gradient)
+  Krylov.krylov_solve!(solver, lo_epm, -pv_gradient)
 
-  x = Vector(solution(solver))
+  x = Vector(Krylov.solution(solver))
   g = Vector(pv_gradient)
   A = Matrix(epm)
 
@@ -56,10 +56,10 @@ end
 
   grad = Vector(pv_gradient)
   pm_v = LinearOperator_for_Vector(epm)
-  solver_vector = Krylov.CgSolver(pm_v, grad)
+  solver_vector = Krylov.CgWorkspace(pm_v, grad)
 
-  Krylov.solve!(solver_vector, pm_v, -grad)
-  x_vector = solution(solver_vector)
+  Krylov.krylov_solve!(solver_vector, pm_v, -grad)
+  x_vector = Krylov.solution(solver_vector)
   check_nan = mapreduce(isnan, |, x_vector)
   !check_nan && @test x_vector ≈ x
 end
