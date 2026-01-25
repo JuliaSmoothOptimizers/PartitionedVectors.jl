@@ -142,7 +142,8 @@ function CgWorkspace(pv::PartitionedVector{T}) where {T}
   z .= (T)(0)
   workspace_tmp = Krylov.CgWorkspace(0, 0, Vector{T})
   stats = workspace_tmp.stats  # <-- robust to modifications in the stats structure upstream
-  solver = Krylov.CgWorkspace{T, T, PartitionedVector{T}}(n, n, Δx, x, r, npc_dir, p, Ap, z, true, stats)
+  solver =
+    Krylov.CgWorkspace{T, T, PartitionedVector{T}}(n, n, Δx, x, r, npc_dir, p, Ap, z, true, stats)
   return solver
 end
 
