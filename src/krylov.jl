@@ -141,7 +141,8 @@ function CgWorkspace(pv::PartitionedVector{T}) where {T}
   z = similar(pv; simulate_vector = true)
   z .= (T)(0)
   stats = Krylov.SimpleStats(0, false, false, false, 0, T[], T[], T[], 0.0, "unknown")
-  solver = Krylov.CgWorkspace{T, T, PartitionedVector{T}}(n, n, Δx, x, r, npc_dir, p, Ap, z, true, stats)
+  solver =
+    Krylov.CgWorkspace{T, T, PartitionedVector{T}}(n, n, Δx, x, r, npc_dir, p, Ap, z, true, stats)
   return solver
 end
 
