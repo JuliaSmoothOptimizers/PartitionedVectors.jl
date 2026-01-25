@@ -4,7 +4,7 @@
 Abstract type for `PartitionedVector<:AbstractPartitionedVector{T}`.
 Krylov.jl requires `PartitionedVector<:DenseVector{T}`.
 """
-abstract type AbstractPartitionedVector{T} <: DenseVector{T} end # for Krylov
+abstract type AbstractPartitionedVector{T} <: AbstractVector{T} end
 
 """
     PartitionedVector{T} <: AbstractPartitionedVector{T}
